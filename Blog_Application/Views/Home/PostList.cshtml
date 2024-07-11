@@ -1,0 +1,181 @@
+﻿@model List<Blog_Application.Models.BlogPost>
+
+<!-- Your view code here -->
+
+<link rel="stylesheet" href="https://kendo.cdn.telerik.com/themes/7.0.2/default/default-main.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.8.0/jquery.contextMenu.min.css">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.8.0/jquery.contextMenu.min.js"></script>
+<script src="https://kendo.cdn.telerik.com/2023.2.829/mjs/kendo.all.js" type="module"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"></script>
+
+
+
+<div id="container">
+    <br />
+    <div>
+        <button type="button" asp-action="Create" class="btn btn-outline-light "><a asp-action="CreatePost" class="text-dark">Create Blog Post</a></button>
+    </div>
+    <br />
+  
+
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel"></h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+                    <form id="myForm">
+                        <div class="form-group">
+                            <input type="hidden" class="form-control" id="Id" name="Id">
+                        </div>
+                        <div class="form-group">
+                            <label for="Title">Title</label>
+                            <input type="text" class="form-control" id="Title" name="Title">
+                        </div>
+                        <div class="form-group">
+                            <label for="Content">Content</label>
+                            <input type="textarea" class="form-control" id="Content" name="Content">
+                        </div>
+                        <div class="form-group">
+                            <label for="DateCreated">DateCreated</label>
+                            <input type="text" class="form-control" id="DateCreated" name="DateCreated">
+                        </div>
+                        <div class="form-group">
+                            <label for="DateModified">DateModified</label>
+                            <input type="text" class="form-control" id="DateModified" name="DateModified">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" id="saveBtn" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="example">
+        <div id="grid"></div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+
+        var grid = $("#grid").kendoGrid({
+            dataSource: {
+
+                transport: {
+                    read: {
+                        url: "/Home/list",
+                        type: "json"
+                    }
+                },
+                pageSize: 20
+            },
+            height: 550,
+
+            sortable: true,
+            pageable: {
+                refresh: true,
+                pageSizes: true,
+                buttonCount: 5
+            },
+            toolbar: ["search"],
+            search: {
+                fields: [
+                    { name: "Id", operator: "eq" },
+                    { name: "Title", operator: "gte" },
+                    
+                ]
+            },
+            columns: [
+
+                { field: "id", title: "Id", width: "100px" },
+                { field: "title", title: "Name", width: "200px" },
+                { field: "content", title: "Content" },
+                { field: "dateCreated", title: "DateCreated", width: "150px" },
+                { field: "dateModified", title: "DateModified", width: "150px" },
+                {
+                    field: "CustomColumn", title: "Action", width: "75",
+                    template: '<button type="button" id="editBtn" class="myMenu "><i class="fa-solid fa-ellipsis-vertical"></i></button>',
+                },
+            ]
+        }).data("kendoGrid");
+
+
+        $("#saveBtn").click(function () {
+            var formData = $("#myForm").serialize();
+            if (formData.id != "") {
+                url = "/Home/Edit/";
+            }
+            else {
+                url = "/Home/Delete/";
+            }
+            $.ajax({
+                type: "post",
+                url: url,
+                data: formData,
+                success: function (d) {
+                    console.log(d);
+                    $("#staticBackdrop").modal("hide");
+                    grid.dataSource.read();
+                }
+            })
+        })
+
+        $("#addBtn").click(function () {
+            $(".modal-header h1").text("Add New");
+        })
+
+        $.contextMenu({
+            selector: ".myMenu",
+            autoHide: true,
+            trigger: "left",
+
+            items: {
+                Edit: {
+                    name: "Edit", callback: function (key, opt) {
+
+                        $(".modal-header h1").text("Edit");
+                        $("#staticBackdrop").modal("show");
+                        var gridData = grid.dataItem($(this).closest("tr"));
+                        $("#Id").val(gridData.id);
+                        $("#Title").val(gridData.title);
+                        $("#Content").val(gridData.content);
+                        $("#DateCreated").val(gridData.dateCreated);
+                        $("#DateModified").val(gridData.dateModified);
+
+                        console.log(gridData);
+
+                    }
+                },
+                Delete: {
+                    name: "Delete", callback: function (key, opt) {
+
+                        var gridData = grid.dataItem($(this).closest("tr"));
+                        var rowId = gridData.id;
+                        alert(rowId);
+                        console.log(rowId);
+                        $.ajax({
+                            type: "post",
+                            url: "/Home/Delete/" + rowId,
+                            data: rowId,
+                            success: function (d) {
+                                console.log(d);
+                                grid.dataSource.read();
+                            }
+                        })
+                    }
+                }
+            }
+        });
+    });
+</script>
