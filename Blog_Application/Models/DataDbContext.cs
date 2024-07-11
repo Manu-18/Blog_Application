@@ -9,6 +9,6 @@ namespace Blog_Application.Models
             
         }
         public DbSet<BlogPost>BlogPosts { get; set; }
-        public DbSet<EmailService> EmailServices { get; set; }
+       
     }
 }
