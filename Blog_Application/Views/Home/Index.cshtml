@@ -1,16 +1,378 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿
+<style>
+    .hero-section {
+        position: relative;
+        background-image: url('https://source.unsplash.com/1600x900/?blog,writing');
+        background-size: cover;
+        background-position: center;
+        color: white;
+        height: 100vh;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        padding-right: 50px;
+    }
 
-<div class="text-center ">
-    <br />
-    <br/>
-    <h1 class="display-4">Welcome</h1>
-    <h3>
-        Publish your passions, your way
-        Create a unique and beautiful blog easily.
-    </h3>
-    <div>
-        <button type="button" asp-action="Create" class="btn btn-outline-light "><a asp-action="CreatePost" class="text-dark">Create Blog Post</a></button>
+    .hero-overlay {
+        position: absolute;
+        top: 20;
+        right: 0;
+        width: 80%;
+        height: 50%;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .hero-content {
+        position: relative;
+        z-index: 1;
+        padding: 20px;
+        text-align: center;
+    }
+
+    .hero-section h1, .hero-section h3 {
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+    }
+
+    .btn-custom {
+        background-color: black;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 25px;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+        font-size: 1.2rem;
+        margin-top: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+        .btn-custom:hover {
+            background-color: black;
+            transform: scale(1.05);
+        }
+
+    .text-white a {
+        color: white;
+        text-decoration: none;
+    }
+
+        .text-white a:hover {
+            text-decoration: none;
+        }
+        a{
+            text-decoration:none;
+        }
+    .section {
+        background: rgba(0, 0, 0, 0.5);
+        padding: 60px 0;
+        text-align: center;
+        margin-top:50px;
+        
+    }
+
+    .section-title {
+        font-size: 2.5rem;
+        margin-bottom: 40px;
+        color: white;
+    }
+
+    .card {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border: none;
+        margin-bottom: 30px;
+    }
+
+        .card img {
+            border-radius: 0;
+        }
+        .card-text{
+            color:black;
+        }
+    .about-section {
+        background-color: #f8f9fa;
+        padding: 60px 0;
+        color:black;
+    }
+
+    .contact-section {
+        background-color: #343a40;
+        color: white;
+        padding: 60px 0;
+    }
+
+        .contact-section h3 {
+            margin-bottom: 30px;
+        }
+
+        .contact-section a {
+            color: #007bff;
+        }
+
+            .contact-section a:hover {
+                color: #0056b3;
+            }
+
+    .popular-posts, .related-posts {
+        margin-top: 20px;
+    }
+</style>
+
+<div class="hero-section">
+    <div class="hero-overlay">
+        <div class="hero-content">
+            <h1 class="display-4">Welcome</h1>
+            <h3>
+                Publish your passions, your way
+                <br />
+                Create a unique and beautiful blog easily.
+            </h3>
+            <div>
+                <button type="button" class="btn btn-custom">
+                    <a asp-action="CreatePost" class="text-white">Create Blog Post</a>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <!-- Featured Blogs Section -->
+    <div class="section">
+        <h2 class="section-title">Featured Blogs</h2>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card">
+                    <img src="https://source.unsplash.com/400x300/?blog,tech" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Featured Blog 1</h5>
+                        <p class="card-text">A brief description of the featured blog post.</p>
+                        <a href="#" class="btn btn-primary">Read More</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <img src="https://source.unsplash.com/400x300/?blog,nature" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Featured Blog 2</h5>
+                        <p class="card-text">A brief description of the featured blog post.</p>
+                        <a href="#" class="btn btn-primary">Read More</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <img src="https://source.unsplash.com/400x300/?blog,travel" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Featured Blog 3</h5>
+                        <p class="card-text">A brief description of the featured blog post.</p>
+                        <a href="#" class="btn btn-primary">Read More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- About Us Section -->
+    <div class="about-section section">
+        <h2 class="section-title">About Us</h2>
+        <p>Welcome to our blog application! We are passionate about helping people share their stories and ideas with the world. Our platform is designed to make blogging easy and enjoyable, with a beautiful and intuitive interface.</p>
+    </div>
+
+    <!-- Latest Posts Section -->
+    <div class="section">
+        <h2 class="section-title">Latest Posts</h2>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card">
+                    <img src="https://source.unsplash.com/400x300/?blog,writing" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Latest Post 1</h5>
+                        <p class="card-text">A brief description of the latest blog post.</p>
+                        <a href="#" class="btn btn-primary">Read More</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <img src="https://source.unsplash.com/400x300/?blog,food" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Latest Post 2</h5>
+                        <p class="card-text">A brief description of the latest blog post.</p>
+                        <a href="#" class="btn btn-primary">Read More</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <img src="https://source.unsplash.com/400x300/?blog,lifestyle" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Latest Post 3</h5>
+                        <p class="card-text">A brief description of the latest blog post.</p>
+                        <a href="#" class="btn btn-primary">Read More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Popular Posts Section -->
+    <div class="section popular-posts">
+        <h2 class="section-title">Popular Posts</h2>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card">
+                    <img src="https://source.unsplash.com/400x300/?blog,popular" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Popular Post 1</h5>
+                        <p class="card-text">A brief description of the popular blog post.</p>
+                        <a href="#" class="btn btn-primary">Read More</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <img src="https://source.unsplash.com/400x300/?blog,popular" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Popular Post 2</h5>
+                        <p class="card-text">A brief description of the popular blog post.</p>
+                        <a href="#" class="btn btn-primary">Read More</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <img src="https://source.unsplash.com/400x300/?blog,popular" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Popular Post 3</h5>
+                        <p class="card-text">A brief description of the popular blog post.</p>
+                        <a href="#" class="btn btn-primary">Read More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Categories Section -->
+    <div class="section">
+        <h2 class="section-title">Categories</h2>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Tech</h5>
+                        <p class="card-text">Latest updates and trends in technology.</p>
+                        <a href="#" class="btn btn-primary">Explore Tech</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Lifestyle</h5>
+                        <p class="card-text">Tips and stories about everyday life.</p>
+                        <a href="#" class="btn btn-primary">Explore Lifestyle</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Travel</h5>
+                        <p class="card-text">Exciting travel experiences and guides.</p>
+                        <a href="#" class="btn btn-primary">Explore Travel</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tags Section -->
+    <div class="section">
+        <h2 class="section-title">Tags</h2>
+        <div class="tags">
+            <a href="#" class="btn btn-outline-light">Tech</a>
+            <a href="#" class="btn btn-outline-light">Lifestyle</a>
+            <a href="#" class="btn btn-outline-light">Travel</a>
+            <a href="#" class="btn btn-outline-light">Food</a>
+            <a href="#" class="btn btn-outline-light">Fitness</a>
+        </div>
+    </div>
+
+    <!-- Newsletter Signup Section -->
+    <div class="section">
+        <h2 class="section-title">Subscribe to our Newsletter</h2>
+        <p>Get the latest blog updates directly to your inbox.</p>
+        <form>
+            <div class="form-group">
+                <input type="email" class="form-control" placeholder="Enter your email">
+            </div>
+            <button type="submit" class="btn btn-primary">Subscribe</button>
+        </form>
+    </div>
+
+    <!-- Contact Us Section -->
+    <div class="contact-section section">
+        <h2 class="section-title">Contact Us</h2>
+        <p>If you have any questions or suggestions, feel free to <a href="mailto:contact@blogapplication.com">contact us</a>. We would love to hear from you!</p>
+    </div>
+
+    <!-- Comments Section -->
+    <div class="section">
+        <h2 class="section-title">Comments</h2>
+        <form>
+            <div class="form-group">
+                <textarea class="form-control" rows="3" placeholder="Leave a comment"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Post Comment</button>
+        </form>
+        <div class="comments-list">
+            <div class="comment">
+                <p><strong>User 1:</strong> Great blog post! Really enjoyed reading it.</p>
+            </div>
+            <div class="comment">
+                <p><strong>User 2:</strong> Informative and well-written. Thanks for sharing!</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Related Posts Section -->
+    <div class="section related-posts">
+        <h2 class="section-title">Related Posts</h2>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card">
+                    <img src="https://source.unsplash.com/400x300/?blog,related" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Related Post 1</h5>
+                        <p class="card-text">A brief description of the related blog post.</p>
+                        <a href="#" class="btn btn-primary">Read More</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <img src="https://source.unsplash.com/400x300/?blog,related" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Related Post 2</h5>
+                        <p class="card-text">A brief description of the related blog post.</p>
+                        <a href="#" class="btn btn-primary">Read More</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <img src="https://source.unsplash.com/400x300/?blog,related" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Related Post 3</h5>
+                        <p class="card-text">A brief description of the related blog post.</p>
+                        <a href="#" class="btn btn-primary">Read More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
